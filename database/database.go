@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/noclueps/fablab/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,18 +16,8 @@ type Db struct {
 
 var Database Db
 
-func getDSN() string {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		panic("Error loading .env file")
-	}
-
-	return os.Getenv("CLEARDB_DATABASE_URL")
-}
-
 func ConnectDB() {
-	dsn := getDSN()
+	dsn := os.Getenv("CLEARDB_DATABASE_URL")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
