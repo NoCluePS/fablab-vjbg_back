@@ -1,11 +1,11 @@
 package database
 
 import (
-	"fablab-projects/models"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/noclueps/fablab/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

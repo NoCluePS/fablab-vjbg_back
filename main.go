@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fablab-projects/controllers"
-	"fablab-projects/database"
 	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/noclueps/fablab/controllers"
+	"github.com/noclueps/fablab/database"
 )
 
 func setupRoutes(app *fiber.App) {
