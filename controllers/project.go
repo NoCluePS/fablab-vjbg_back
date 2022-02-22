@@ -99,3 +99,7 @@ func DeleteProject(c *fiber.Ctx) error {
 	})
 	return nil
 }
+
+func EditProject(c *fiber.Ctx) error {
+	return nil
+}
