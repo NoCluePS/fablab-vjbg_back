@@ -33,7 +33,7 @@ func CreateProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "user not found!")
 	}
 
-	var project models.Project{}
+	var project models.Project
 	project.Title = req.Title
 	project.Description = req.Description
 	project.WhoWrokedOn = req.WhoWrokedOn
@@ -47,6 +47,11 @@ func CreateProject(c *fiber.Ctx) error {
 }
 
 func GetProjects(c *fiber.Ctx) error {
+	db := database.Database.DB
+	var projects []models.Project
+	db.Find(&projects);
+	c.JSON(projects)
+
 	return nil
 }
 
