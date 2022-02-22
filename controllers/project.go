@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"log"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/lib/pq"
+	"github.com/noclueps/fablab/database"
 	"github.com/noclueps/fablab/models"
 	"github.com/noclueps/fablab/utils"
 )
@@ -11,16 +14,20 @@ import (
 type createProjectRequest struct {
 	Title string `json:"title"`
 	Description string `json:"description"`
-	WhoWrokedOn string `json:"whoWorkedOn"`
 	Supervisor string `json:"supervisor"`
-	Images pq.StringArray `gorm:"type:string[]" json:"images"`
+ 	Images pq.StringArray `gorm:"type:text[]" json:"images"`
 }
 
 func CreateProject(c *fiber.Ctx) error {
 	tokenStr := c.Cookies("jwt")
 	claims, err := utils.ExtractClaims(tokenStr)
 	db := database.Database.DB
-	req := new(createProjectRequest)
+	var req createProjectRequest
+
+	if err := c.BodyParser(&req); err != nil {
+		log.Println(err.Error())
+		return fiber.NewError(fiber.StatusBadRequest, "failed parsing request body")
+	}
 
 	if !err {
 		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
@@ -33,14 +40,14 @@ func CreateProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "user not found!")
 	}
 
-	var project models.Project
+	project := new(models.Project)
 	project.Title = req.Title
 	project.Description = req.Description
-	project.WhoWrokedOn = req.WhoWrokedOn
 	project.Supervisor = req.Supervisor
-	project.Images = req.Images
-	prject.Author = user.Name
+	project.Images = strings.Join(req.Images, `,`)
+	project.Author = user.Name
 
+	db.Create(&project)
 	c.JSON(project)
 
 	return nil
@@ -57,9 +64,38 @@ func GetProjects(c *fiber.Ctx) error {
 
 func GetProject(c *fiber.Ctx) error {
 	id := c.Params("id");
+	db := database.Database.DB
 	var project models.Project
-	log.Println(id)
 
+	db.Where("ID = ?", id).First(&project);
+
+	c.JSON(project)
+
+	return nil
+}
+
+func DeleteProject(c *fiber.Ctx) error {
+	id := c.Params("id")
+	tokenStr := c.Cookies("jwt")
+	claims, err := utils.ExtractClaims(tokenStr)
+	db := database.Database.DB
+	var user models.User
+	var project models.Project
+
+	if !err  {
+		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
+	}
 	
+	db.Where("ID = ?", claims["user_id"]).First(&user)
+	db.Where("ID = ?", id).First(&project)
+
+	if project.Author != user.Name {
+		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
+	}
+
+	db.Delete(&project)
+	c.JSON(fiber.Map{
+		"success": true,
+	})
 	return nil
 }

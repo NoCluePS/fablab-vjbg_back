@@ -29,6 +29,7 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/project", controllers.CreateProject)
 	app.Get("/project", controllers.GetProjects)
 	app.Get("/project/:id", controllers.GetProject)
+	app.Delete("/project/:id", controllers.DeleteProject)
 }
 
 func main() {
@@ -38,5 +39,9 @@ func main() {
 	app.Use(logger.New())
 	setupRoutes(app)
 
-	log.Fatal(app.Listen(":"+os.Getenv("PORT")))
+	if os.Getenv("PORT") == "" {
+		log.Fatal(app.Listen(":8000"))
+	} else {
+		log.Fatal(app.Listen(":"+os.Getenv("PORT")))
+	}
 }
