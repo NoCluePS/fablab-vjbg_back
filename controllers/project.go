@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"fablab-project/database"
+	"fablab-project/models"
+	"fablab-project/utils"
 	"log"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/lib/pq"
-	"github.com/noclueps/fablab/database"
-	"github.com/noclueps/fablab/models"
-	"github.com/noclueps/fablab/utils"
 )
 
 type createProjectRequest struct {

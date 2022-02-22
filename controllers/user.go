@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"fablab-project/database"
+	"fablab-project/models"
 	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 	"github.com/joho/godotenv"
-	"github.com/noclueps/fablab/database"
-	"github.com/noclueps/fablab/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

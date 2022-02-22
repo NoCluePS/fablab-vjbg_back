@@ -1,4 +1,4 @@
-module github.com/noclueps/fablab
+module fablab-project
 
 go 1.17
 
