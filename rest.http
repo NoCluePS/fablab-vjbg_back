@@ -25,10 +25,10 @@ POST http://localhost:8000/project/ HTTP/1.1
 Content-Type: application/json
 
 {
-	"title": "something",
-	"description": "something_test",
-	"supervisor": "teacher",
-    "images": ["something", "something_else"]
+	"title": "Pirmasis darbas",
+	"description": "testuojam, žiūrim viską viską",
+	"supervisor": "Lina",
+    "images": ["###", "###"]
 }
 
 ###
@@ -36,3 +36,11 @@ GET http://localhost:8000/project HTTP/1.1
 
 ###
 DELETE http://localhost:8000/project/2 HTTP/1.1
+
+###
+PATCH  http://localhost:8000/project/9 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Pakeičiau Title iš \"Pirmasis darbas\""
+}

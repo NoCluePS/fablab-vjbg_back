@@ -101,5 +101,39 @@ func DeleteProject(c *fiber.Ctx) error {
 }
 
 func EditProject(c *fiber.Ctx) error {
+	id := c.Params("id")
+	tokenStr := c.Cookies("jwt")
+	claims, err := utils.ExtractClaims(tokenStr)
+	var req createProjectRequest
+	db := database.Database.DB
+	var user models.User
+	var project models.Project
+
+	if err := c.BodyParser(&req); err != nil {
+		log.Println(err.Error())
+		return fiber.NewError(fiber.StatusBadRequest, "failed parsing request body")
+	}
+
+	if !err  {
+		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
+	}
+	
+	db.Where("ID = ?", claims["user_id"]).First(&user)
+	db.Where("ID = ?", id).First(&project)
+
+	if project.Author != user.Name {
+		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
+	}
+
+	if (req.Description != "") {
+		project.Description = req.Description
+	} else if (req.Supervisor != "") {
+		project.Supervisor = req.Supervisor
+	} else if (req.Title != "") {
+		project.Title = req.Title
+	}
+
+	db.Save(&project)
+	c.JSON(project)
 	return nil
 }
