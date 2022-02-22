@@ -20,10 +20,7 @@ func ExtractClaims(tokenStr string) (jwt.MapClaims, bool) {
         return nil, false
     }
 
-	log.Println(token)
-
     if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		log.Println(claims)
         return claims, true
     } else {
         log.Printf("Invalid JWT Token")

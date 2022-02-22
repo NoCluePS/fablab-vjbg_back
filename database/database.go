@@ -17,18 +17,15 @@ type Db struct {
 
 var Database Db
 
-func getDSN() string {
-	err := godotenv.Load(".env")
+func ConnectDB() {
+	dbErr := godotenv.Load(".env")
 
-	if err != nil {
-		panic("Error loading .env file")
+	if dbErr != nil {
+		log.Fatal("Failed to connect to db! \n", dbErr.Error())
+		os.Exit(2)
 	}
 
-	return os.Getenv("CLEARDB_DATABASE_URL")
-}
-
-func ConnectDB() {
-	dsn := getDSN()
+	dsn := os.Getenv("CLEARDB_DATABASE_URL")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 

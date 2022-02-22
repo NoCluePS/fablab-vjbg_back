@@ -5,10 +5,10 @@ POST http://localhost:8000/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "secret": "secret",
+    "secret": "P19wvm0bOm",
     "password": "testing1",
-    "name": "Test",
-    "email": "testing@testing.com"
+    "name": "Test1",
+    "email": "testing1@testing.com"
 }
 
 ###
@@ -17,5 +17,30 @@ Content-Type: application/json
 
 {
     "password": "testing1",
-    "email": "testing@testing.com"
+    "email": "testing1@testing.com"
+}
+
+###
+POST http://localhost:8000/project/ HTTP/1.1
+Content-Type: application/json
+
+{
+	"title": "Pirmasis darbas",
+	"description": "testuojam, žiūrim viską viską",
+	"supervisor": "Lina",
+    "images": ["###", "###"]
+}
+
+###
+GET http://localhost:8000/project HTTP/1.1
+
+###
+DELETE http://localhost:8000/project/2 HTTP/1.1
+
+###
+PATCH  http://localhost:8000/project/9 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Pakeičiau Title iš \"Pirmasis darbas\""
 }
