@@ -57,7 +57,9 @@ func GetProjects(c *fiber.Ctx) error {
 
 func GetProject(c *fiber.Ctx) error {
 	id := c.Params("id");
+	var project models.Project
 	log.Println(id)
 
+	
 	return nil
 }
