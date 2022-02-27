@@ -25,7 +25,7 @@ func ConnectDB() {
 		os.Exit(2)
 	}
 
-	dsn := os.Getenv("CLEARDB_DATABASE_URL")
+	dsn := os.Getenv("CONN_STRING")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
