@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/joho/godotenv"
 )
@@ -24,7 +25,7 @@ func setupRoutes(app *fiber.App) {
 		return nil
 	})
 
-	app.Get("/login", controllers.Login)
+	app.Post("/login", controllers.Login)
 	app.Post("/register", controllers.Register)
 	app.Post("/project", controllers.CreateProject)
 	app.Get("/project", controllers.GetProjects)
@@ -36,6 +37,12 @@ func setupRoutes(app *fiber.App) {
 func main() {
 	app := fiber.New()
 	database.ConnectDB()
+
+	app.Use(cors.New(cors.Config{
+    	AllowOrigins: "*",
+    	AllowHeaders:  "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization",
+		AllowCredentials: true,
+	}))
 
 	app.Use(logger.New())
 	setupRoutes(app)
