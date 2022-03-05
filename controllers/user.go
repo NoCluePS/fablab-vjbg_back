@@ -3,6 +3,8 @@ package controllers
 import (
 	"fablab-project/database"
 	"fablab-project/models"
+	"fablab-project/utils"
+	"log"
 	"os"
 	"time"
 
@@ -149,6 +151,31 @@ func Login(c *fiber.Ctx) error {
 	c.Cookie(&cookie)
 
 	c.Status(200).JSON(user)
+
+	return nil
+}
+
+func GetCurrentUser(c *fiber.Ctx) error {
+	tokenStr := c.Cookies("jwt")
+	db := database.Database.DB
+	claims, err := utils.ExtractClaims(tokenStr)
+	var user models.User
+
+	log.Println(tokenStr)
+
+	if !err {
+		c.JSON(nil)
+		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
+	}
+
+	db.Where("ID = ?", claims["user_id"] ).First(&user)
+	
+	if user.ID == 0 {
+		c.JSON(nil)
+		return fiber.NewError(fiber.StatusBadRequest, "user not found!")
+	}
+
+	c.JSON(user)
 
 	return nil
 }

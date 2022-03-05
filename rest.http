@@ -16,8 +16,8 @@ POST http://localhost:8000/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "password": "testing1",
-    "email": "testing1@testing.com"
+    "password": "Pijulkinas1",
+    "email": "serapinaspijus@gmail.com"
 }
 
 ###
@@ -26,9 +26,9 @@ Content-Type: application/json
 
 {
 	"title": "Pirmasis darbas",
-	"description": "testuojam, žiūrim viską viską",
+	"description": "testuojam, žiūrim ar viskas veikia",
 	"supervisor": "Lina",
-    "images": ["###", "###"]
+    "images": ["http://tny.im/rtS", "http://tny.im/rtT"]
 }
 
 ###
@@ -44,3 +44,6 @@ Content-Type: application/json
 {
     "title": "Pakeičiau Title iš \"Pirmasis darbas\""
 }
+
+###
+GET http://localhost:8000/user HTTP/1.1
