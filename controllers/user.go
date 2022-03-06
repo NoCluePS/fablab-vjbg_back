@@ -179,3 +179,10 @@ func GetCurrentUser(c *fiber.Ctx) error {
 
 	return nil
 }
+
+func LogOut(c *fiber.Ctx) error {
+	c.ClearCookie("jwt");
+	return c.JSON(fiber.Map{
+		"success": true,
+	})
+}

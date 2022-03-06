@@ -89,6 +89,8 @@ func DeleteProject(c *fiber.Ctx) error {
 	db.Where("ID = ?", claims["user_id"]).First(&user)
 	db.Where("ID = ?", id).First(&project)
 
+	log.Println(user)
+
 	if project.Author != user.Name {
 		return fiber.NewError(fiber.StatusBadRequest, "Unauthorized")
 	}
