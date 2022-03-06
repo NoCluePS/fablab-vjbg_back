@@ -44,7 +44,7 @@ func CreateProject(c *fiber.Ctx) error {
 	project.Title = req.Title
 	project.Description = req.Description
 	project.Supervisor = req.Supervisor
-	project.Images = strings.Join(req.Images, `,`)
+	project.Images = strings.Join(req.Images, `{`)
 	project.Author = user.Name
 
 	db.Create(&project)
