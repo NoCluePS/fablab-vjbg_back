@@ -23,6 +23,10 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          secret: |
+           "CONN_STRING=${{serets.CONN_STRING}}"
+           "SECRET_BETA=${{secrets.SECRET_BETA}}"
+           "SECRET_JWT=${{secrets.SECRET_JWT}}"
           context: ./
           file: ./Dockerfile
           push: true
