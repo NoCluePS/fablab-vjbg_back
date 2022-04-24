@@ -30,7 +30,6 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-
 func createJWTTOken(user models.User) (string, time.Time, error) {
 	exp := time.Now().Add(time.Hour * 30)
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -194,7 +193,10 @@ func LogOut(c *fiber.Ctx) error {
 func CheckRegisterKey(c *fiber.Ctx) error {
 	var req RegisterKey
 	if err := c.BodyParser(&req); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Register key required")
+		return c.JSON(fiber.Map{
+			"error": "Request key not specified",
+			"success": false,
+		})
 	}
 
 	if err := godotenv.Load(".env"); err != nil {
@@ -205,8 +207,13 @@ func CheckRegisterKey(c *fiber.Ctx) error {
 	registerKey := os.Getenv("SECRET_BETA")
 
 	if (req.Key != registerKey) {
-		return fiber.NewError(fiber.StatusBadRequest, "Register key not valid")
+		return c.JSON(fiber.Map{
+			"error": "Request key not valid",
+			"success": false,
+		})
 	}
 
-	return nil
+	return c.JSON(fiber.Map{
+		"success": true,
+	})
 }

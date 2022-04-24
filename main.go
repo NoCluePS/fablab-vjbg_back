@@ -34,7 +34,7 @@ func setupRoutes(app *fiber.App) {
 	app.Patch("/project/:id", controllers.EditProject)
 	app.Get("/user", controllers.GetCurrentUser)
 	app.Delete("/login", controllers.LogOut)
-	app.Get("/reg", controllers.CheckRegisterKey)
+	app.Post("/reg", controllers.CheckRegisterKey)
 }
 
 func main() {
