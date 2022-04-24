@@ -14,6 +14,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type RegisterKey struct {
+	Key string `json:"register_key"`
+}
+
 type registerRequest struct {
 	Secret string `json:"secret"`
 	Password string `json:"password"`
@@ -185,4 +189,24 @@ func LogOut(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success": true,
 	})
+}
+
+func CheckRegisterKey(c *fiber.Ctx) error {
+	var req RegisterKey
+	if err := c.BodyParser(&req); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Register key required")
+	}
+
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatal("Failed to connect to db! \n", err.Error())
+		os.Exit(2)
+	}
+
+	registerKey := os.Getenv("SECRET_BETA")
+
+	if (req.Key != registerKey) {
+		return fiber.NewError(fiber.StatusBadRequest, "Register key not valid")
+	}
+
+	return nil
 }
